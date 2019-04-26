@@ -11,6 +11,7 @@ TagManager:
   - Rubber
   - BuddyBot
   - HUD
+  - EventSystem
   layers:
   - Default
   - TransparentFX

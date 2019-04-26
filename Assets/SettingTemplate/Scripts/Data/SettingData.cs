@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public interface ISetting
+public interface ISettingData
 {
     void Save();
     void LoadConfig();
 }
 
-public abstract class SettingData<T>:ISetting
+public abstract class SettingData<T>: ISettingData
 {
     protected T m_PrevData;
     protected T m_Data;
@@ -138,7 +138,7 @@ public class StringData : SettingData<string>
     }
 }
 
-public class Vec2Data : SettingData<Vector2>,ISetting
+public class Vec2Data : SettingData<Vector2>
 {
 
     public Vec2Data(string _key, Vector2 _data) : base(_key, _data) { }

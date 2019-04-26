@@ -13,4 +13,9 @@ public static class Extesnsion
             go.SetActive(bActive);
         }
     }
+
+    public static bool IsNull(this UnityEngine.Object obj)
+    {
+        return obj == null || obj.Equals(null);
+    }
 }

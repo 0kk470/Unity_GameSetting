@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class UIBaseTab : UIBase
@@ -10,14 +11,15 @@ public class UIBaseTab : UIBase
     private Transform pageContent;
 
     protected Toggle[] toggles;
-    protected UIBase[] tabs;
     protected int m_iCurPage;
+
+    public UnityAction<int> onSelectChanged;
 
     protected override void Init()
     {
         base.Init();
         InitToggles();
-        InitTabs();
+        InitChildUI();
     }
 
     private void InitToggles()
@@ -44,10 +46,10 @@ public class UIBaseTab : UIBase
         }
     }
 
-    private void InitTabs()
+    private void InitChildUI()
     {
         if (pageContent != null)
-            tabs = pageContent.GetComponentsInChildren<UIBase>();
+            childsUI = pageContent.GetComponentsInChildren<UIBase>();
         else
         {
             Debug.LogError("You must set a PageContent First");
@@ -59,16 +61,20 @@ public class UIBaseTab : UIBase
         if (m_iCurPage == index)
             return;
         m_iCurPage = index;
-        for (int i = 0;i < tabs.Length;i++)
+        for (int i = 0;i < childsUI.Length;i++)
         {
             if(index == i)
             {
-                tabs[i].Show();
+                childsUI[i].Show();
             }
             else
             {
-                tabs[i].Hide();
+                childsUI[i].Hide();
             }
+        }
+        if(onSelectChanged != null)
+        {
+            onSelectChanged.Invoke(index);
         }
     }
 
@@ -84,15 +90,14 @@ public class UIBaseTab : UIBase
 
     protected override void DeInit()
     {
-        base.DeInit();
         if (toggles != null)
         {
             for (int i = 0; i < toggles.Length; ++i)
             {
-                int index = i;
                 toggles[i].onValueChanged.RemoveAllListeners();
             }
         }
+        base.DeInit();
     }
 
 }

@@ -8,7 +8,7 @@ class SettingManager:Singleton<SettingManager>
 {
     private List<Resolution> m_Resolutions;
 
-    private ISetting[] settings;
+    private ISettingData[] settings;
 
     //VideoSetting
     public Vec2Data screen;
@@ -31,15 +31,16 @@ class SettingManager:Singleton<SettingManager>
     public override void Init()
     {
 
-        settings = new ISetting[]
+        settings = new ISettingData[]
         {
             screen         = new Vec2Data("ScreenSize",new Vector2(1280,720)),
             isFullScreen   = new BoolData("FullScreen",true),
             vSync          = new BoolData("vSync",false),
-            lockFrame      = new IntData("lockFrame",60),
+            lockFrame      = new IntData ("lockFrame",60),
         };
         Debug.Log("Setting Manager Init");
         LoadAll();
+        ApplyVideoSetting();
     }
 
     public override void DeInit()

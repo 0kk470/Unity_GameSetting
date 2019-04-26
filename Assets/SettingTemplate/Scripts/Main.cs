@@ -8,7 +8,14 @@ public class Main : MonoBehaviour {
 	void Awake () {
         DontDestroyOnLoad(gameObject);
         SettingManager.Instance.Init();
+        UIManager.Instance.Init();
+        UIManager.Instance.OpenUI("GameSettingUI");
 	}
+
+    private void OnDestroy()
+    {
+        UIManager.Instance.DeInit();
+    }
 
     private void OnApplicationQuit()
     {

@@ -2,6 +2,9 @@
 
 public class UIBase:MonoBehaviour
 {
+    private bool bOpen = false;
+    public string uiName { get; set; }
+    protected UIBase[] childsUI;
     protected void Awake()
     {
         Init();
@@ -37,6 +40,7 @@ public class UIBase:MonoBehaviour
         if (bRefresh)
             Refresh();
         gameObject.SetActiveEx(true);
+        bOpen = true;
         OnShow();
     }
 
@@ -48,11 +52,28 @@ public class UIBase:MonoBehaviour
     public virtual void Hide()
     {
         gameObject.SetActiveEx(false);
+        bOpen = false;
         OnHide();
+    }
+
+    public virtual void Close()
+    {
+        Hide();
+        UIManager.Instance.RemoveUI(uiName);
+        Destroy(gameObject);
+    }
+
+    public bool isOpen()
+    {
+        return bOpen;
     }
 
     protected virtual void DeInit()
     {
-
+        if(childsUI != null)
+        {
+            for (int i = 0; i < childsUI.Length; i++)
+                childsUI[i].Close();
+        }
     }
 }

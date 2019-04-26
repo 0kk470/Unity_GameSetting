@@ -408,6 +408,7 @@ GameObject:
   - component: {fileID: 224609932612510926}
   - component: {fileID: 222770264176355538}
   - component: {fileID: 114606607017360638}
+  - component: {fileID: 114014777548057294}
   m_Layer: 5
   m_Name: GameSettingUI
   m_TagString: Untagged
@@ -1112,6 +1113,19 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114014777548057294
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1380988994356638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d32bfabab55f99249b9d7849d2270a66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  toggleGroup: {fileID: 114580939688902072}
+  pageContent: {fileID: 224311566489082720}
 --- !u!114 &114053794568974906
 MonoBehaviour:
   m_ObjectHideFlags: 1

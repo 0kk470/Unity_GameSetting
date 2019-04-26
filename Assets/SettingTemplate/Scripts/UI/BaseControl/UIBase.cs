@@ -2,8 +2,8 @@
 
 public class UIBase:MonoBehaviour
 {
-    private bool bOpen = false;
-    public string uiName { get; set; }
+    private bool   bOpen = false;
+    public  string uiName { get; set; }
     protected UIBase[] childsUI;
     protected void Awake()
     {
@@ -63,7 +63,7 @@ public class UIBase:MonoBehaviour
         Destroy(gameObject);
     }
 
-    public bool isOpen()
+    public bool IsOpen()
     {
         return bOpen;
     }

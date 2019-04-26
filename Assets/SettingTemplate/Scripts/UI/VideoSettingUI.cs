@@ -10,8 +10,15 @@ public class VideoSettingUI : UIBase,ISettingUI {
     private Dropdown m_ResolutionDropdown;
     private Slider   m_LockFrameSlider;
 
+    public bool isSettingChanged
+    {
+        get;
+        set;
+    }
+
     protected override void Init()
     {
+        isSettingChanged = false;
         Debug.Log("VideoSetting Init");
         m_FullScreenToggle = transform.Find("fullscreenToggle").GetComponent<Toggle>();
         m_VsyncToggle = transform.Find("vsyncToggle").GetComponent<Toggle>();

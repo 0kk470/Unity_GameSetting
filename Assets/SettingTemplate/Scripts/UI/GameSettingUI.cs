@@ -9,6 +9,7 @@ public sealed class GameSettingUI : UIBaseTab
         base.Init();
         m_ApplyBtn = transform.Find("Buttons/apply_btn").GetComponent<Button>();
         m_ApplyBtn.onClick.AddListener(OnApplyBtnClick);
+        SelectItem(0);
     }
 
     private void OnCloseBtnClick()

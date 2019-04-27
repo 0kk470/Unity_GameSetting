@@ -11,7 +11,7 @@ public class UIBaseTab : UIBase
     private Transform pageContent;
 
     protected Toggle[] toggles;
-    protected int m_iCurPage;
+    protected int m_iCurPage = -1;
 
     public UnityAction<int> onSelectChanged;
 
@@ -49,7 +49,7 @@ public class UIBaseTab : UIBase
     private void InitChildUI()
     {
         if (pageContent != null)
-            childsUI = pageContent.GetComponentsInChildren<UIBase>();
+            childsUI = pageContent.GetComponentsInChildren<UIBase>(true);
         else
         {
             Debug.LogError("You must set a PageContent First");
@@ -86,6 +86,12 @@ public class UIBaseTab : UIBase
                toggles[index].isOn = false;
             toggles[index].isOn = true;
         }
+    }
+
+    protected override void OnHide()
+    {
+        base.OnHide();
+        m_iCurPage = -1;
     }
 
     protected override void DeInit()

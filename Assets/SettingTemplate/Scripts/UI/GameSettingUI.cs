@@ -3,12 +3,15 @@ using UnityEngine;
 public sealed class GameSettingUI : UIBaseTab
 {
     private Button m_ApplyBtn;
+    private Button m_CloseBtn;
 
     protected override void Init()
     {
         base.Init();
         m_ApplyBtn = transform.Find("Buttons/apply_btn").GetComponent<Button>();
+        m_CloseBtn = transform.Find("Buttons/close_btn").GetComponent<Button>();
         m_ApplyBtn.onClick.AddListener(OnApplyBtnClick);
+        m_CloseBtn.onClick.AddListener(OnCloseBtnClick);
         SelectItem(0);
     }
 
@@ -34,5 +37,6 @@ public sealed class GameSettingUI : UIBaseTab
     {
         base.DeInit();
         m_ApplyBtn.onClick.RemoveListener(OnApplyBtnClick);
+        m_CloseBtn.onClick.RemoveListener(OnCloseBtnClick);
     }
 }

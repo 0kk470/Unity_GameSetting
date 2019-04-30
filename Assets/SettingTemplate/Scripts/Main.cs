@@ -18,6 +18,22 @@ public class Main : MonoBehaviour {
         EventManager.Instance.Init();
     }
 
+
+    void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            if(UIManager.Instance.IsUIOpen("GameSettingUI"))
+            {
+                UIManager.Instance.CloseUI("GameSettingUI");
+            }
+            else
+            {
+                UIManager.Instance.OpenUI("GameSettingUI");
+            }
+        }
+    }
+
     void DeInit()
     {
         SettingManager.Instance.DeInit();

@@ -70,6 +70,13 @@ class UIManager:Singleton<UIManager>
         return ui;
     }
 
+    public bool IsUIOpen(string name)
+    {
+        if (!m_UIdic.ContainsKey(name))
+            return false;
+        return m_UIdic[name] != null && m_UIdic[name].IsOpen();
+    }
+
     public void CloseUI(string name)
     {
         if(m_UIdic.ContainsKey(name))

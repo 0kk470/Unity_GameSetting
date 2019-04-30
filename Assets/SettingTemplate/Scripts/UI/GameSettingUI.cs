@@ -19,14 +19,13 @@ public sealed class GameSettingUI : UIBaseTab
 
     public void OnApplyBtnClick()
     {
-        MessageBox.ShowMessage("Test");
         if(m_iCurPage >=0 && m_iCurPage < childsUI.Length)
         {
-            ISettingUI setting = childsUI[m_iCurPage] as ISettingUI;
-            if(setting != null)
+            ISettingUI settingUI = childsUI[m_iCurPage] as ISettingUI;
+            if(settingUI != null)
             {
-                Debug.Log(childsUI[m_iCurPage].gameObject.name);
-                setting.ApplySetting();
+                Debug.Log(childsUI[m_iCurPage].gameObject.name + " Apply");
+                settingUI.ApplySetting();
             }
         }
     }

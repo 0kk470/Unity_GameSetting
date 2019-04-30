@@ -63,6 +63,7 @@ class MessageBox:UIBase
         Hide();
     }
 
+    [Obsolete("Not Necessary")]
     private void OnCloseBtnClick()
     {
         Hide();

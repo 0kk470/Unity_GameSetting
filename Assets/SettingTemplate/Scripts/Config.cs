@@ -14,4 +14,5 @@ class Config
     //Text
     public const string MessageBoxBtn1Name = "Confirm";
     public const string MessageBoxBtn2Name = "Cancel";
+    public const string VideoSettingNotSaveTip = "You have unsaved changes on Video Setting \n Do you want to apply these changes?";
 }

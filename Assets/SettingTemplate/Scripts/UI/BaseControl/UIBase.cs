@@ -7,7 +7,7 @@ public class UIBase:MonoBehaviour
     protected UIBase[] childsUI;
     protected void Awake()
     {
-        Init();
+       Init();
     }
 
     protected void OnDestroy()
@@ -37,9 +37,9 @@ public class UIBase:MonoBehaviour
 
     public virtual void Show(bool bRefresh = true)
     {
+        gameObject.SetActiveEx(true);
         if (bRefresh)
             Refresh();
-        gameObject.SetActiveEx(true);
         bOpen = true;
         OnShow();
     }

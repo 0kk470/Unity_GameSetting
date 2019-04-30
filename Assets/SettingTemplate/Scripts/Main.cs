@@ -6,20 +6,33 @@ public class Main : MonoBehaviour {
 
 	// Use this for initialization
 	void Awake () {
-        DontDestroyOnLoad(gameObject);
-        SettingManager.Instance.Init();
-        UIManager.Instance.Init();
+        Init();
         UIManager.Instance.OpenUI("GameSettingUI");
 	}
 
+    void Init()
+    {
+        DontDestroyOnLoad(gameObject);
+        SettingManager.Instance.Init();
+        UIManager.Instance.Init();
+        EventManager.Instance.Init();
+    }
+
+    void DeInit()
+    {
+        SettingManager.Instance.DeInit();
+        UIManager.Instance.DeInit();
+        EventManager.Instance.DeInit();
+    }
+
     private void OnDestroy()
     {
-        UIManager.Instance.DeInit();
+        DeInit();
     }
 
     private void OnApplicationQuit()
     {
-        SettingManager.Instance.SaveAll();
+        SettingManager.Instance.SaveSetting();
     }
 
 }

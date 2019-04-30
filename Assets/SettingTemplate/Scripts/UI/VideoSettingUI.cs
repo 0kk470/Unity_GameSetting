@@ -12,13 +12,15 @@ public class VideoSettingUI : UIBase,ISettingUI {
 
     public bool isSettingChanged
     {
-        get;
-        set;
+        get
+        {
+            return SettingManager.Instance.isSettingChange(SettingType.Video);
+        }
     }
 
     protected override void Init()
     {
-        isSettingChanged = false;
+        base.Init();
         Debug.Log("VideoSetting Init");
         m_FullScreenToggle = transform.Find("fullscreenToggle").GetComponent<Toggle>();
         m_VsyncToggle = transform.Find("vsyncToggle").GetComponent<Toggle>();
@@ -35,10 +37,16 @@ public class VideoSettingUI : UIBase,ISettingUI {
 
     protected override void LoadConfig()
     {
-        m_FullScreenToggle.isOn = SettingManager.Instance.isFullScreen.value;
-        m_VsyncToggle.isOn = SettingManager.Instance.vSync.value;
-        m_LockFrameSlider.value = SettingManager.Instance.lockFrame.value;
+        m_FullScreenToggle.isOn = SettingManager.Instance.st_IsFullScreen;
+        m_VsyncToggle.isOn = SettingManager.Instance.st_VSync;
+        m_LockFrameSlider.value = SettingManager.Instance.st_lockFrame;
         LoadDropdown();
+    }
+
+    public override void Refresh()
+    {
+        base.Refresh();
+        LoadConfig();
     }
 
     private void LoadDropdown()
@@ -46,9 +54,11 @@ public class VideoSettingUI : UIBase,ISettingUI {
         m_ResolutionDropdown.ClearOptions();
         var resolutions = SettingManager.Instance.supportedResolutions;
         int iSelectIndex = 0;
-        for(int i = 0;i < resolutions.Count;i++)
+        Vector2 screenSize = SettingManager.Instance.st_screen;
+        int refreshRate = SettingManager.Instance.st_RefreshRate;
+        for (int i = 0;i < resolutions.Count;i++)
         {
-            if (SettingManager.Instance.screen.value.x == resolutions[i].width && SettingManager.Instance.screen.value.y == resolutions[i].height)
+            if (refreshRate == resolutions[i].refreshRate && screenSize.x == resolutions[i].width && screenSize.y == resolutions[i].height)
                 iSelectIndex = i;
             m_ResolutionDropdown.options.Add(new Dropdown.OptionData(resolutions[i].ToString()));
         }
@@ -58,12 +68,12 @@ public class VideoSettingUI : UIBase,ISettingUI {
 
     private void OnFullScreenToggleChange(bool isOn)
     {
-        SettingManager.Instance.isFullScreen.value = isOn;
+        SettingManager.Instance.st_IsFullScreen.Set(isOn);
     }
 
     private void OnVsyncToggleClick(bool isOn)
     {
-        SettingManager.Instance.vSync.value = isOn;
+        SettingManager.Instance.SetVsync(isOn);
     }
 
     private void OnResolutionSelect(int iSelectIndex)
@@ -71,18 +81,42 @@ public class VideoSettingUI : UIBase,ISettingUI {
         var resolutions = SettingManager.Instance.supportedResolutions;
         if(iSelectIndex < resolutions.Count)
         {
-            SettingManager.Instance.screen.value = new Vector2(resolutions[iSelectIndex].width, resolutions[iSelectIndex].height);
+            SettingManager.Instance.st_screen.Set(Vector2.right * resolutions[iSelectIndex].width + Vector2.up * resolutions[iSelectIndex].height);
+            SettingManager.Instance.st_RefreshRate.Set(resolutions[iSelectIndex].refreshRate);
         }
     }
 
     private void OnLockFrameValueChanged(float fValue)
     {
         int iValue = Mathf.FloorToInt(fValue);
-        SettingManager.Instance.lockFrame.value = iValue;
+        SettingManager.Instance.SetFrameLock(iValue);
+    }
+
+    private void OnSettingDataChange(EventData data)
+    {
+        LoadConfig();
     }
 
     public void ApplySetting()
     {
-        SettingManager.Instance.ApplyVideoSetting();
+        SettingManager.Instance.ApplySetting(SettingType.Video);
+    }
+
+    public void RevertSetting()
+    {
+        SettingManager.Instance.RevertSetting(SettingType.Video);
+    }
+
+    protected override void OnShow()
+    {
+
+    }
+
+    protected override void OnHide()
+    {
+        if(isSettingChanged)
+        {
+            MessageBox.ShowMessage(Config.VideoSettingNotSaveTip, ApplySetting, RevertSetting);
+        }
     }
 }

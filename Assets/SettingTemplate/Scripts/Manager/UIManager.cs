@@ -60,6 +60,16 @@ class UIManager:Singleton<UIManager>
         return ui;
     }
 
+    public UIBase GetUI(string name)
+    {
+        UIBase ui = null;
+        if ( !m_UIdic.TryGetValue(name,out ui) )
+        {
+            Debug.LogErrorFormat("Error, < {0} > UI exists,but the object reference is null",name);
+        }
+        return ui;
+    }
+
     public void CloseUI(string name)
     {
         if(m_UIdic.ContainsKey(name))

@@ -5,7 +5,13 @@ using System.Text;
 
 public enum GameEvent
 {
-    testEvent = 0,
+    //UIEvent
+    OnSettingRevert,
+}
+
+class SettingEventData:EventData
+{
+   
 }
 
 public abstract class EventData
@@ -26,7 +32,7 @@ class EventManager:Singleton<EventManager>
 
     public void AddListener(GameEvent eventType, EventListener handler)
     {
-        if(m_listeners[eventType] == null)
+        if(!m_listeners.ContainsKey(eventType))
         {
             m_listeners[eventType] = new List<EventListener>();
         }
@@ -35,24 +41,28 @@ class EventManager:Singleton<EventManager>
 
     public void RemoveListener(GameEvent eventType, EventListener handler)
     {
-        if (m_listeners[eventType] != null)
+        if ( m_listeners.ContainsKey(eventType) )
         {
-            m_listeners[eventType].Remove(handler);
+            if (m_listeners[eventType] != null)
+                m_listeners[eventType].Remove(handler);
         }
     }
 
 
     public void RemoveAllListeners(GameEvent eventType, EventListener handler)
     {
-        if (m_listeners[eventType] != null)
+        if(m_listeners.ContainsKey(eventType))
         {
-            m_listeners[eventType].Clear();
+            if (m_listeners[eventType] != null)
+            {
+                m_listeners[eventType].Clear();
+            }
         }
     }
 
-    public void DispathEvent(GameEvent eventType,EventData data)
+    public void DispathEvent(GameEvent eventType,EventData data = null)
     {
-        if (m_listeners[eventType] != null)
+        if (m_listeners.ContainsKey(eventType) && m_listeners[eventType] != null)
         {
             var list = m_listeners[eventType];
             for(int i = 0;i < list.Count;i++)

@@ -18,4 +18,14 @@ public static class Extesnsion
     {
         return obj == null || obj.Equals(null);
     }
+
+    public static int ToInt(this Enum e)
+    {
+        return e.GetHashCode();
+    }
+
+    public static List<string> GetEnumNameList(this Enum e)
+    {
+        return Enum.GetNames(e.GetType()).ToList();
+    }
 }

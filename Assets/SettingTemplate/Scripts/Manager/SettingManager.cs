@@ -14,6 +14,23 @@ public enum SettingType
     All,
 }
 
+public enum eGraphicLevel
+{
+    Low = 0,
+    Medium,
+    High,
+    Ultra,
+    Custom,
+}
+
+public enum eTextureQuality
+{
+    Low = 3,
+    Medium = 2,
+    High = 1,
+    Ultra = 0,
+}
+
 class SettingManager : Singleton<SettingManager>
 {
     private List<Resolution> m_Resolutions;
@@ -43,6 +60,20 @@ class SettingManager : Singleton<SettingManager>
         }
     }
 
+    //Audio Setting
+    public IntData  st_MasterVolume;
+    public IntData  st_MusicVolume;
+    public IntData  st_GameVolume;
+
+    //Graphic Setting
+    public IntData  st_GraphicLevel;
+    public IntData  st_TextureQuality;
+    public IntData  st_AnisotropicFiltering;
+    public IntData  st_Shadows;
+    public IntData  st_ShadowResolution;
+    public IntData  st_ShadowDistance;
+    public BoolData st_SoftParticle;
+
     public override void Init()
     {
         Debug.Log("Setting Manager Init");
@@ -55,6 +86,17 @@ class SettingManager : Singleton<SettingManager>
             st_lockFrame    = new IntData ("lockFrame",60),
             st_RefreshRate  = new IntData ("RefreshRate",60),
         };
+
+        graphicSettings = new ISettingData[]
+        {
+            st_GraphicLevel   =       new IntData("GraphicLevel",eGraphicLevel.Medium.ToInt()),
+            st_TextureQuality =       new IntData("TextureQuality",eTextureQuality.Medium.ToInt()),
+            st_AnisotropicFiltering = new IntData("AnisotropicFiltering",AnisotropicFiltering.Disable.ToInt()),
+            st_Shadows =              new IntData("Shadow",ShadowQuality.Disable.ToInt()),
+            st_ShadowResolution =     new IntData("ShadowResolution",ShadowResolution.Medium.ToInt()),
+            st_ShadowDistance =       new IntData("ShadowDistance",60),
+            st_SoftParticle =         new BoolData("SoltParticle",false),
+    };
 
         LoadSetting();
         ApplySetting(SettingType.Video);
@@ -218,7 +260,7 @@ class SettingManager : Singleton<SettingManager>
         ApplySetting(type,false);
     }
 
-    public bool isSettingChange(SettingType type)
+    public bool isSettingChange(SettingType type) //Only VideoSetting Need Now
     {
         bool isChanged = false;
         switch (type)
@@ -314,6 +356,96 @@ class SettingManager : Singleton<SettingManager>
             st_VSync.Save();
         }
 
+    }
+    //Audio
+    /*TODO */
+
+    //Graphic
+    public void SetGraphicLevel(eGraphicLevel graphicLevel)
+    {
+        switch(graphicLevel)
+        {
+            case eGraphicLevel.Low:
+                {
+                    SetTextureQuality(eTextureQuality.Low);
+                    SetAnisotropicFiltering(AnisotropicFiltering.Disable);
+                    SetShadow(ShadowQuality.Disable);
+                    SetShadowDistance(0);
+                    SetShadowResolution(ShadowResolution.Low);
+                    SetSoftParticle(false);
+                    break;
+                }
+            case eGraphicLevel.Medium:
+                {
+                    SetTextureQuality(eTextureQuality.Medium);
+                    SetAnisotropicFiltering(AnisotropicFiltering.Disable);
+                    SetShadow(ShadowQuality.HardOnly);
+                    SetShadowDistance(60);
+                    SetShadowResolution(ShadowResolution.Medium);
+                    SetSoftParticle(false);
+                    break;
+                }
+            case eGraphicLevel.High:
+                {
+                    SetTextureQuality(eTextureQuality.High);
+                    SetAnisotropicFiltering(AnisotropicFiltering.Enable);
+                    SetShadow(ShadowQuality.HardOnly);
+                    SetShadowDistance(120);
+                    SetShadowResolution(ShadowResolution.High);
+                    SetSoftParticle(true);
+                    break;
+                }
+            case eGraphicLevel.Ultra:
+                {
+                    SetTextureQuality(eTextureQuality.Ultra);
+                    SetAnisotropicFiltering(AnisotropicFiltering.ForceEnable);
+                    SetShadow(ShadowQuality.All);
+                    SetShadowDistance(180);
+                    SetShadowResolution(ShadowResolution.VeryHigh);
+                    SetSoftParticle(true);
+                    break;
+                }
+            case eGraphicLevel.Custom:
+                break;
+        }
+        st_GraphicLevel.Set(graphicLevel.ToInt());
+        EventManager.Instance.DispathEvent(GameEvent.OnGraphicLevelChanged);
+    }
+
+    public void SetTextureQuality(eTextureQuality textureQuality)
+    {
+        QualitySettings.masterTextureLimit = textureQuality.ToInt();
+        st_TextureQuality.Set(textureQuality.ToInt());
+    }
+
+    public void SetAnisotropicFiltering(AnisotropicFiltering filtering)
+    {
+        QualitySettings.anisotropicFiltering = filtering;
+        st_AnisotropicFiltering.Set(filtering.ToInt());
+    }
+
+    public void SetShadow(ShadowQuality shadowQuality)
+    {
+        QualitySettings.shadows = shadowQuality;
+        st_Shadows.Set(shadowQuality.ToInt());
+    }
+
+    public void SetShadowResolution(ShadowResolution _shadowResolution)
+    {
+        QualitySettings.shadowResolution = _shadowResolution;
+        st_ShadowResolution.Set(_shadowResolution.ToInt());
+    }
+
+    public void SetShadowDistance(int iDistance)
+    {
+        QualitySettings.shadowDistance = iDistance;
+        st_ShadowDistance.Set(iDistance);
+    }
+
+    public void SetSoftParticle(bool isOn)
+    {
+        QualitySettings.softParticles = isOn;
+        st_SoftParticle.Set(isOn);
     }
 
     //Apply Setting Interface End

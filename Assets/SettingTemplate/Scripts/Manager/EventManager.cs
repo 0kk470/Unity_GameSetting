@@ -7,6 +7,7 @@ public enum GameEvent
 {
     //UIEvent
     OnSettingRevert,
+    OnGraphicLevelChanged,
 }
 
 class SettingEventData:EventData

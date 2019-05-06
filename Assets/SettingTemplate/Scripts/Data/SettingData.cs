@@ -9,6 +9,7 @@ public interface ISettingData
     void Save();
     void Revert();
     void LoadConfig();
+    bool isChanged { get; }
 }
 
 public abstract class SettingData<T>: ISettingData

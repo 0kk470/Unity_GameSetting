@@ -36,7 +36,7 @@ public class SimpleOptionControl : UIBehaviour {
         set { SelectOption(value); }
     }
 
-    public OptionSelectEvent onOptionSelect;
+    public OptionSelectEvent onOptionSelect = new OptionSelectEvent();
 
     protected override void Awake()
     {
@@ -62,6 +62,12 @@ public class SimpleOptionControl : UIBehaviour {
         RefreshCaption();
     }
 #endif
+
+    public void InitOptions(List<string> newOptions)
+    {
+        ClearOptions();
+        AddOptions(newOptions);
+    }
 
     public void AddOption(string data)
     {
@@ -130,7 +136,7 @@ public class SimpleOptionControl : UIBehaviour {
 
     private void OnNextBtnClick()
     {
-        if (m_iCurOption > m_Options.Count)
+        if (m_iCurOption >= m_Options.Count - 1)
             return;
         SelectOption(m_iCurOption + 1);
     }

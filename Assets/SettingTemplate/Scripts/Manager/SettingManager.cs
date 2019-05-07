@@ -96,7 +96,7 @@ class SettingManager : Singleton<SettingManager>
             st_ShadowResolution =     new IntData("ShadowResolution",ShadowResolution.Medium.ToInt()),
             st_ShadowDistance =       new IntData("ShadowDistance",60),
             st_SoftParticle =         new BoolData("SoltParticle",false),
-    };
+        };
 
         LoadSetting();
         ApplySetting(SettingType.Video);

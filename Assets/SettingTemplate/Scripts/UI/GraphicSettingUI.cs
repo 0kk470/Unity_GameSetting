@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class GraphicSettingUI : UIBase {
 
-    //TODO :Graphic Setting
     private SimpleOptionControl m_GraphicLevelOption;
     private SimpleOptionControl m_TextureQualityOption;
     private SimpleOptionControl m_AnisotropicFilteringOption;

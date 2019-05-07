@@ -16,22 +16,13 @@ public class Main : MonoBehaviour {
         SettingManager.Instance.Init();
         UIManager.Instance.Init();
         EventManager.Instance.Init();
+        InputManager.Instance.Init();
     }
 
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
-        {
-            if(UIManager.Instance.IsUIOpen("GameSettingUI"))
-            {
-                UIManager.Instance.CloseUI("GameSettingUI");
-            }
-            else
-            {
-                UIManager.Instance.OpenUI("GameSettingUI");
-            }
-        }
+        InputManager.Instance.Update();
     }
 
     void DeInit()
@@ -39,6 +30,7 @@ public class Main : MonoBehaviour {
         SettingManager.Instance.DeInit();
         UIManager.Instance.DeInit();
         EventManager.Instance.DeInit();
+        InputManager.Instance.DeInit();
     }
 
     private void OnDestroy()

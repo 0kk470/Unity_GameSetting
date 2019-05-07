@@ -13,6 +13,7 @@ public sealed class GameSettingUI : UIBaseTab
         m_ApplyBtn.onClick.AddListener(OnApplyBtnClick);
         m_CloseBtn.onClick.AddListener(OnCloseBtnClick);
         SelectItem(0);
+        onSelectChanged += OnSelectPageChanged;
     }
 
     private void OnCloseBtnClick()
@@ -33,9 +34,16 @@ public sealed class GameSettingUI : UIBaseTab
         }
     }
 
+    private void OnSelectPageChanged(int index)
+    {
+        //Apply Setting Btn is only visible for VideoSetting
+        m_ApplyBtn.gameObject.SetActiveEx(index == 0);
+    }
+
     protected override void DeInit()
     {
         base.DeInit();
+        onSelectChanged -= OnSelectPageChanged;
         m_ApplyBtn.onClick.RemoveListener(OnApplyBtnClick);
         m_CloseBtn.onClick.RemoveListener(OnCloseBtnClick);
     }

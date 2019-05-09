@@ -8,11 +8,21 @@ public enum GameEvent
     //UIEvent
     OnSettingRevert,
     OnGraphicLevelChanged,
+    OnCommandAlreadyBindKey,
 }
 
 class SettingEventData:EventData
 {
    
+}
+
+class CommandEventData:EventData
+{
+    public CommandEventData(Command _command)
+    {
+        Command = _command;
+    }
+    public Command Command { get; private set; }
 }
 
 public abstract class EventData

@@ -63,7 +63,7 @@ public class SimpleOptionControl : UIBehaviour {
     }
 #endif
 
-    public void InitOptions(List<string> newOptions)
+    public void InitOptions(IList<string> newOptions)
     {
         ClearOptions();
         AddOptions(newOptions);
@@ -77,7 +77,7 @@ public class SimpleOptionControl : UIBehaviour {
         }
     }
 
-    public void AddOptions(List<string> newOptions)
+    public void AddOptions(IList<string> newOptions)
     {
         if (newOptions == null)
             return;

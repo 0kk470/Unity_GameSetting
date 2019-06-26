@@ -43,4 +43,13 @@ public class Main : MonoBehaviour {
         SettingManager.Instance.SaveSetting();
     }
 
+    struct testdata { public string name; }
+    
+    [ContextMenu("Test")]
+    void Test()
+    {
+        testdata data = new testdata();
+        data.name = "test";
+        Debug.Log(data.name);
+    }
 }

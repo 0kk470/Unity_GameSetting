@@ -27,6 +27,24 @@ abstract class Command
     public virtual void executeOnHold() { }
 }
 
+class SettingCommand : Command
+{
+    public SettingCommand(KeyCode key = KeyCode.Escape) : base(key) { }
+
+    public override void executeOnDown()
+    {
+        base.executeOnDown();
+        if (UIManager.Instance.IsUIOpen("GameSettingUI"))
+        {
+            UIManager.Instance.CloseUI("GameSettingUI");
+        }
+        else
+        {
+            UIManager.Instance.OpenUI("GameSettingUI");
+        }
+    }
+}
+
 class InputManager : Singleton<InputManager>
 {
     private List<Command> m_Commands = new List<Command>();
@@ -34,6 +52,7 @@ class InputManager : Singleton<InputManager>
     public override void Init()
     {
         base.Init();
+        m_Commands.Add(new SettingCommand());
     }
 
     public override void DeInit()
@@ -48,17 +67,19 @@ class InputManager : Singleton<InputManager>
         {
             foreach (var command in m_Commands)
             {
-                if (Input.GetKey(command.key))
+                if (Input.GetKeyDown(command.key))
                 {
-                    command.executeOnHold();
+                    command.executeOnDown();
                 }
                 else if (Input.GetKeyUp(command.key))
                 {
                     command.executeOnUp();
                 }
-                else if (Input.GetKeyDown(command.key))
+
+
+                if (Input.GetKey(command.key))
                 {
-                    command.executeOnDown();
+                    command.executeOnHold();
                 }
             }
         }
@@ -68,10 +89,10 @@ class InputManager : Singleton<InputManager>
         }
     }
 
-    public void BindCommandWithKey(Command command,KeyCode newkey)
+    public void BindCommandWithKey(Command command, KeyCode newkey)
     {
         var existedCommand = FindCommandByKey(newkey);
-        if(existedCommand != null)
+        if (existedCommand != null)
         {
             EventManager.Instance.DispathEvent(GameEvent.OnCommandAlreadyBindKey, new CommandEventData(existedCommand));
             existedCommand.key = KeyCode.None;
@@ -82,9 +103,9 @@ class InputManager : Singleton<InputManager>
     public Command FindCommandByKey(KeyCode key)
     {
         Command result = null;
-        if(m_Commands != null)
+        if (m_Commands != null)
         {
-            result = m_Commands.Find( command => { return command.key == key; });
+            result = m_Commands.Find(command => { return command.key == key; });
         }
         return result;
     }

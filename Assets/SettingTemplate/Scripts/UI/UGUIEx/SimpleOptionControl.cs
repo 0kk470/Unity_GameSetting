@@ -45,6 +45,12 @@ public class SimpleOptionControl : UIBehaviour {
         base.Awake();
     }
 
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        RefreshCaption();
+    }
+
     protected override void OnDestroy()
     {
         ClearOptions();

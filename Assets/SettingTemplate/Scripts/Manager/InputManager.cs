@@ -49,6 +49,9 @@ class InputManager : Singleton<InputManager>
 {
     private List<Command> m_Commands = new List<Command>();
     private bool isInSetting = false;
+    public Vector2 direction { get { return m_Direction; } }
+
+    protected Vector2 m_Direction = Vector2.zero;
     public override void Init()
     {
         base.Init();
@@ -71,12 +74,10 @@ class InputManager : Singleton<InputManager>
                 {
                     command.executeOnDown();
                 }
-                else if (Input.GetKeyUp(command.key))
+                if (Input.GetKeyUp(command.key))
                 {
                     command.executeOnUp();
                 }
-
-
                 if (Input.GetKey(command.key))
                 {
                     command.executeOnHold();

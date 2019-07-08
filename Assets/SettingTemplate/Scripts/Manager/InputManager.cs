@@ -110,4 +110,9 @@ class InputManager : Singleton<InputManager>
         }
         return result;
     }
+
+    public IList<Command> GetAllCommands()
+    {
+        return m_Commands;
+    }
 }

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-abstract class Command
+public abstract class Command
 {
     private KeyCode m_KeyCode = KeyCode.None;
 
@@ -48,10 +48,22 @@ class SettingCommand : Command
 class InputManager : Singleton<InputManager>
 {
     private List<Command> m_Commands = new List<Command>();
-    private bool isInSetting = false;
-    public Vector2 direction { get { return m_Direction; } }
 
-    protected Vector2 m_Direction = Vector2.zero;
+    private Vector2 m_direction = Vector2.zero;
+
+    public Vector2 direction
+    {
+        get
+        {
+            return m_direction;
+        }
+        private set
+        {
+            m_direction = value;
+        }
+    }
+
+    private bool isInSetting = false;
     public override void Init()
     {
         base.Init();
@@ -66,28 +78,76 @@ class InputManager : Singleton<InputManager>
 
     public void Update()
     {
-        if (!isInSetting)
+        if (isInSetting)
+            return;
+        UpdateMove();
+        UpdateCommands();
+    }
+
+    private void UpdateCommands()
+    {
+        foreach (var command in m_Commands)
         {
-            foreach (var command in m_Commands)
+            if (Input.GetKeyDown(command.key))
             {
-                if (Input.GetKeyDown(command.key))
-                {
-                    command.executeOnDown();
-                }
-                if (Input.GetKeyUp(command.key))
-                {
-                    command.executeOnUp();
-                }
-                if (Input.GetKey(command.key))
-                {
-                    command.executeOnHold();
-                }
+                command.executeOnDown();
+            }
+            if (Input.GetKeyUp(command.key))
+            {
+                command.executeOnUp();
+            }
+            if (Input.GetKey(command.key))
+            {
+                command.executeOnHold();
             }
         }
-        else
-        {
+    }
 
+    private void UpdateMove()
+    {
+        //Left
+        if (Input.GetKey(SettingManager.Instance.MoveLeft))
+        {
+            m_direction.x -= 1;
         }
+        else if (Input.GetKeyUp(SettingManager.Instance.MoveLeft))
+        {
+            if (m_direction.x < 0)
+                m_direction.x = 0;
+        }
+        //Right
+        if (Input.GetKey(SettingManager.Instance.MoveRight))
+        {
+            m_direction.x += 1;
+        }
+        else if (Input.GetKeyUp(SettingManager.Instance.MoveRight))
+        {
+            if (m_direction.x > 0)
+                m_direction.x = 0;
+        }
+        //Up
+        if (Input.GetKey(SettingManager.Instance.MoveUp))
+        {
+            m_direction.y += 1;
+        }
+        else if (Input.GetKeyUp(SettingManager.Instance.MoveUp))
+        {
+            if (m_direction.y > 0)
+                m_direction.y = 0;
+        }
+        //Down
+        if (Input.GetKey(SettingManager.Instance.MoveDown))
+        {
+            m_direction.y -= 1;
+        }
+        else if (Input.GetKeyUp(SettingManager.Instance.MoveDown))
+        {
+            if (m_direction.y < 0)
+                m_direction.y = 0;
+        }
+        m_direction.x = Mathf.Clamp(m_direction.x, -1, 1);
+        m_direction.y = Mathf.Clamp(m_direction.y, -1, 1);
+        m_direction = m_direction.normalized;
     }
 
     public void BindCommandWithKey(Command command, KeyCode newkey)

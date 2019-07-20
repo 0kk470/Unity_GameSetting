@@ -74,6 +74,12 @@ class SettingManager : Singleton<SettingManager>
     public IntData  st_ShadowDistance;
     public BoolData st_SoftParticle;
 
+    //InputSettins
+    public KeyCodeData MoveLeft;
+    public KeyCodeData MoveRight;
+    public KeyCodeData MoveUp;
+    public KeyCodeData MoveDown;
+
     public override void Init()
     {
         Debug.Log("Setting Manager Init");
@@ -96,6 +102,14 @@ class SettingManager : Singleton<SettingManager>
             st_ShadowResolution =     new IntData("ShadowResolution",ShadowResolution.Medium.ToInt()),
             st_ShadowDistance =       new IntData("ShadowDistance",60),
             st_SoftParticle =         new BoolData("SoltParticle",false),
+        };
+
+        inputSettings = new ISettingData[]
+        {
+            MoveLeft =  new KeyCodeData("Left",KeyCode.A),
+            MoveRight = new KeyCodeData("Right",KeyCode.D),
+            MoveUp =    new KeyCodeData("Up",KeyCode.W),
+            MoveDown =  new KeyCodeData("Down",KeyCode.S),
         };
 
         LoadSetting();

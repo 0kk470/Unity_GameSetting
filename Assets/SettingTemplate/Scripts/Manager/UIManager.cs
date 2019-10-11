@@ -130,4 +130,17 @@ class UIManager:Singleton<UIManager>
             m_UIdic.Remove(name);
         }
     }
+
+    public void SwitchWindow(string name)
+    {
+        if (string.IsNullOrEmpty(name)) return;
+        if (UIManager.Instance.IsUIOpen("name"))
+        {
+            UIManager.Instance.CloseUI("name");
+        }
+        else
+        {
+            UIManager.Instance.OpenUI("name");
+        }
+    }
 }

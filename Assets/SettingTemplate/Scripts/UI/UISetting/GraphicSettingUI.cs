@@ -76,7 +76,7 @@ public class GraphicSettingUI : UIBase {
         base.OnHide();
     }
 
-    private void OnGraphicLevelChanged(EventData data)
+    private void OnGraphicLevelChanged(object data)
     {
         LoadConfig();
     }

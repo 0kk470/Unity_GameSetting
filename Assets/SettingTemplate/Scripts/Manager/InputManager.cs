@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Command
@@ -34,21 +35,13 @@ class SettingCommand : Command
     public override void executeOnDown()
     {
         base.executeOnDown();
-        if (UIManager.Instance.IsUIOpen("GameSettingUI"))
-        {
-            UIManager.Instance.CloseUI("GameSettingUI");
-        }
-        else
-        {
-            UIManager.Instance.OpenUI("GameSettingUI");
-        }
+        UIManager.Instance.SwitchWindow("GameSettingUI");
     }
 }
 
 class InputManager : Singleton<InputManager>
 {
     private List<Command> m_Commands = new List<Command>();
-
     private Vector2 m_direction = Vector2.zero;
 
     public Vector2 direction
@@ -174,5 +167,19 @@ class InputManager : Singleton<InputManager>
     public IList<Command> GetAllCommands()
     {
         return m_Commands;
+    }
+
+    private KeyCode[] m_AllKeycodes = (KeyCode[])System.Enum.GetValues(typeof(KeyCode));
+
+    public void DetectPressedKeyCode()
+    {
+       for(int i = 0;i < m_AllKeycodes.Length;i++)
+        {
+            if (Input.GetKeyDown(m_AllKeycodes[i]))
+            {
+                Debug.Log(m_AllKeycodes[i].ToString() + " is Pressed!");
+                EventManager.Instance.DispathEvent(GameEvent.KeyPressed, m_AllKeycodes[i]);
+            }
+        }
     }
 }

@@ -187,6 +187,40 @@ public class StringData : SettingData<string>
     }
 }
 
+public class KeyCodeData:SettingData<KeyCode>
+{
+    public KeyCodeData(string key, KeyCode keycode) : base(key, keycode) { }
+
+    public override void OnInit()
+    {
+        base.OnInit();
+        m_Data = KeyCode.None;
+    }
+
+    public override void LoadConfig()
+    {
+        m_Data = (KeyCode)Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString(key, m_Data.ToString() ) );
+    }
+
+    public override void Save()
+    {
+        PlayerPrefs.SetString(key, m_Data.ToString());
+    }
+
+    public override bool isChanged
+    {
+        get
+        {
+            return m_Data.ToString() != PlayerPrefs.GetString(key, m_Data.ToString());
+        }
+    }
+
+    public static implicit operator KeyCode(KeyCodeData data)
+    {
+        return data.m_Data;
+    }
+}
+
 public class Vec2Data : SettingData<Vector2>
 {
 

@@ -343,7 +343,7 @@ class SettingManager : Singleton<SettingManager>
 
     //Apply Setting Interface Start
 
-    //Video
+    #region Video
     public void SetResolution(int width = 0, int height = 0, bool isFullScreen = true, int refreshRate = 60)
     {
         width = width == 0 ? Screen.width : width;
@@ -371,10 +371,11 @@ class SettingManager : Singleton<SettingManager>
         }
 
     }
+    #endregion
     //Audio
     /*TODO */
 
-    //Graphic
+    #region Graphic
     public void SetGraphicLevel(eGraphicLevel graphicLevel)
     {
         switch(graphicLevel)
@@ -461,6 +462,6 @@ class SettingManager : Singleton<SettingManager>
         QualitySettings.softParticles = isOn;
         st_SoftParticle.Set(isOn);
     }
-
+    #endregion
     //Apply Setting Interface End
 }

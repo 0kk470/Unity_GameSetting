@@ -9,6 +9,7 @@ public enum GameEvent
     OnSettingRevert,
     OnGraphicLevelChanged,
     OnCommandAlreadyBindKey,
+    KeyPressed,
 }
 
 class SettingEventData:EventData
@@ -32,7 +33,7 @@ public abstract class EventData
 
 class EventManager:Singleton<EventManager>
 {
-    public delegate void EventListener(EventData data);
+    public delegate void EventListener(object data);
 
     private Dictionary<GameEvent, List<EventListener> > m_listeners = new Dictionary<GameEvent, List<EventListener> >();
 
@@ -71,7 +72,7 @@ class EventManager:Singleton<EventManager>
         }
     }
 
-    public void DispathEvent(GameEvent eventType,EventData data = null)
+    public void DispathEvent(GameEvent eventType,object data = null)
     {
         if (m_listeners.ContainsKey(eventType) && m_listeners[eventType] != null)
         {

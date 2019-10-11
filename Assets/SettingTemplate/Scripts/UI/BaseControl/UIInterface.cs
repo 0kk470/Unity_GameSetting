@@ -1,4 +1,5 @@
-﻿
+﻿using UnityEngine;
+using DG.Tweening;
 
 public interface ISettingUI
 {
@@ -7,4 +8,13 @@ public interface ISettingUI
     void RevertSetting();
 
     bool isSettingChanged { get; }
+}
+
+public interface IAnimationUI
+{
+    void StartAnimation();
+
+    void StopAnimation();
+
+    void OnAnimationFinish();
 }

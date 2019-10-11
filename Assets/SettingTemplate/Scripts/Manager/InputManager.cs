@@ -173,6 +173,7 @@ class InputManager : Singleton<InputManager>
 
     public void DetectPressedKeyCode()
     {
+       if (!Input.anyKeyDown) return;
        for(int i = 0;i < m_AllKeycodes.Length;i++)
         {
             if (Input.GetKeyDown(m_AllKeycodes[i]))
